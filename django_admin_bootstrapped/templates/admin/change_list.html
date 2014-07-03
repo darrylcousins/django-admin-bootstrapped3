@@ -10,54 +10,59 @@
     <link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
   {% endif %}
   {% if cl.formset or action_form %}
-    {% url 'admin:jsi18n' as jsi18nurl %}
-    <script type="text/javascript" src="{{ jsi18nurl|default:'../../jsi18n/' }}"></script>
+    <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
   {% endif %}
   {{ media.css }}
+  {% if not actions_on_top and not actions_on_bottom %}
+    <style>
+      #changelist table thead th:first-child {width: inherit}
+    </style>
+  {% endif %}
 {% endblock %}
 
 {% block extrahead %}
 {{ block.super }}
 {{ media.js }}
-{% if action_form %}
-  {% if actions_on_top or actions_on_bottom %}
-    <script type="text/javascript">
-    (function($) {
-        $(document).ready(function($) {
-            $("tr input.action-select").actions();
-        });
-    })(django.jQuery);
-    </script>
-  {% endif %}
-  {% if actions_on_top %}
-    <script>
-    $(function() {
-      $('.actions .btn').click(function(event){
-        $('#changelist-form').append($('select[name=action]')).append($('.select-across')).submit();
-      });
+{% if action_form %}{% if actions_on_top or actions_on_bottom %}
+<script type="text/javascript">
+(function($) {
+    $(document).ready(function($) {
+        $("tr input.action-select").actions();
     });
-    </script>
-  {% endif %}
-{% endif %}
+})(django.jQuery);
+</script>
+{% endif %}{% endif %}
 {% endblock %}
 
 {% block bodyclass %}_change-list{% endblock %}
 
+<!-- breadcrumbs -->
 {% if not is_popup %}
-{% block breadcrumbs %}
-<ul class="breadcrumb">
-<li><a href="{% url 'admin:index' %}">{% trans 'Home' %}</a> <span class="divider">/</span></li>
-<!--<li><a href="{% url 'admin:app_list' app_label=cl.opts.app_label %}">{% render_with_template_if_exist app_label|lower|add:"/admin_app_name.html" app_label %}</a> <span class="divider">/</span></li>-->
-<li><a href="{% url 'admin:app_list' app_label=cl.opts.app_label %}">{{  app_label|title }}</a> <span class="divider">/</span></li>
-<li>{{ cl.opts.verbose_name_plural|capfirst }}</li>
-</ul>
-{% endblock %}
+  {% block breadcrumbs %}
+  <ol class="breadcrumb">
+    <li>
+      <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+    </li>
+    <li>
+      <a href="{% url 'admin:app_list' app_label=opts.app_label %}">
+        {% render_with_template_if_exist opts.module_name|lower|add:"/admin_app_name.html" module_name|capfirst %}
+      </a>
+    </li>
+    <li>
+      {{ opts.verbose_name_plural|capfirst }}
+    </li>
+  </ol>
+  {% endblock %}
 {% endif %}
 
 {% block coltype %}flex{% endblock %}
 
 {% block object-tools %}
-    <ul class="object-tools form-inline pull-left inline">
+<form class="" id="changelist-form" action="" method="post"
+<!-- object tools -->
+<div class="row">
+  <div class="col-sm-5">
+    <ul class="object-tools list-inline">
         {% block object-tools-items %}
         {% if has_add_permission %}
         <li>
@@ -67,87 +72,114 @@
         </li>
         {% endif %}
         {% endblock %}
-        {% if action_form and actions_on_top and cl.full_result_count %}
-            {% admin_actions %}
-        {% endif %}
     </ul>
+  </div>
 
-    <div class="pull-right">
-        {% block search %}{% search_form cl %}{% endblock %}
-        {% if cl.has_filters %}
-        <ul class="nav pull-right">
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans 'Filter' %} <b class="caret"></b></a>
-                <ul class="dropdown-menu pull-right">
-                    {% for spec in cl.filter_specs %}
-                        {% admin_list_filter cl spec %}
-                    {% endfor %}
-                </ul>
-            </li>
-        </ul>
-        {% endif %}
-    </div>
+  <div class="col-sm-5">
+    {% if action_form and actions_on_top and cl.full_result_count %}
+        {% admin_actions %}
+    {% endif %}
+  </div>
+
+  <div class="col-sm-2">
+    {% block search %}{% search_form cl %}{% endblock %}
+    {% if cl.has_filters %}
+    <ul class="nav pull-right">
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans 'Filter' %} <b class="caret"></b></a>
+            <ul class="dropdown-menu pull-right">
+                {% for spec in cl.filter_specs %}
+                    {% admin_list_filter cl spec %}
+                {% endfor %}
+            </ul>
+        </li>
+    </ul>
+    {% endif %}
+  </div>
+</div>
 {% endblock %}
 
 {% block content %}
-<form class="" id="changelist-form" action="" method="post"{% if cl.formset.is_multipart %} enctype="multipart/form-data"{% endif %}>{% csrf_token %}
+<div class="row">
+  <div class="col-sm-6">
+    {% block date_hierarchy %}
+        {% date_hierarchy cl %}
+    {% endblock %}
+  </div>
 
-{% if cl.formset.errors %}
-<div class="row-fluid">
-    <div class="alert alert-error">
-        <p class="errornote">
-            {% blocktrans count cl.formset.errors|length as counter %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktrans %}
-        </p>
-        {{ cl.formset.non_form_errors }}
-    </div>
+  <div class="col-sm-6">
+    {% if cl.formset %}
+        <div>{{ cl.formset.management_form }}</div>
+    {% else %}
+    &nbsp;
+    {% endif %}
+  </div>
 </div>
-{% endif %}
 
-<div class="row-fluid">
+<div id="content-main" class="row">
+  <div class="col-sm-12">
+    {% if cl.formset.errors %}
+    <div class="alert alert-danger">
+      <p class="errornote">
+        {% blocktrans count cl.formset.errors|length as counter %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktrans %}
+      </p>
+      {{ cl.formset.non_form_errors }}
+    </div>
+    {% endif %}
 
+    <!-- load template description from module if exists -->
     {% with app_name=cl.opts.module_name|lower|slugify %}
-        {% render_with_template_if_exist cl.opts.app_label|lower|add:"/admin_app_"|add:app_name|add:"_description.html" "" %}
+      {% render_with_template_if_exist cl.opts.app_label|lower|add:"/admin_app_"|add:app_name|add:"_description.html" "" %}
     {% endwith %}
 
-    <div class="span12">
-
-        <div id="content-main" class="row-fluid">
-            <div class="module{% if cl.has_filters %} filtered{% endif %}" id="_changelist">
-                {% block date_hierarchy %}
-                    {% date_hierarchy cl %}
-                {% endblock %}
-
-                {% if cl.formset %}
-                    <div>{{ cl.formset.management_form }}</div>
-                {% endif %}
-
-                {% block result_list %}
-                    {% result_list cl %}
-                {% endblock %}
-            </div>
-        </div>
-        {# {% if cl.formset and cl.result_count %} #}
-        <div class="row-fluid">
-            <div class="navbar">
-                <div class="navbar-inner">
-                    <div class="form-inline pull-left">
-                        {% if action_form and actions_on_bottom and cl.full_result_count %}
-                            {% admin_actions %}
-                        {% endif %}
-                    </div>
-                    <div class="pull-right">
-                        <input type="submit" name="_save" class="btn btn-primary default" value="{% trans 'Save' %}"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {# {% endif %} #}
+    <!-- vertical spacing -->
+    <div class="control-group">
+      &nbsp;
     </div>
 
+    <!-- tabulated object list -->
+    <div class="module{% if cl.has_filters %} filtered{% endif %}" id="_changelist">
+        {% if cl.formset.is_multipart %}
+          enctype="multipart/form-data"
+        {% endif %}
+        {% csrf_token %}
+      {% block result_list %}
+          {% result_list cl %}
+      {% endblock %}
+    </div><!-- end tabulated object list -->
+  </div>
 </div>
-{% block pagination %}
-    {% pagination cl %}
-{% endblock %}
+
+<!-- actions, pagination  -->
+<div class="row">
+  <div class="col-sm-12">
+    {# {% if cl.formset and cl.result_count %} #}
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="form-inline pull-left">
+              {% if action_form and actions_on_bottom and cl.full_result_count %}
+                  {% admin_actions %}
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-8">
+        {% block pagination %}
+            {% pagination cl %}
+        {% endblock %}
+      </div>
+      <!--
+      <div class="col-sm-2">
+        <input type="submit" name="_save" class="btn btn-primary default" value="{% trans 'Save' %}"/>
+      </div>
+      -->
+    </div>
+    {# {% endif %} #}
+  </div>
+</div>
 </form>
 {% endblock %}
 

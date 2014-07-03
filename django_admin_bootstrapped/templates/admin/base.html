@@ -3,44 +3,55 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
 <head>
     <title>{% block title %}{% endblock %}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    {% block extrastyle %}{% endblock %}
+  {% block extrastyle %}{% endblock %}
 
-    <!-- Le styles, placed after extrastyle to correctly override default styling -->
-    <link href="{% static "bootstrap/css/bootstrap.min.css" %}" rel="stylesheet"/>
-    <style type="text/css">
-      body {
-        padding-top: 60px;
-        padding-bottom: 40px;
-      }
-    </style>
-    <link href="{% static "bootstrap/css/bootstrap-responsive.min.css" %}" rel="stylesheet"/>
-    <link rel="stylesheet" type="text/css" href="{% static "admin/css/overrides.css" %}" />
+  <!-- Le styles, placed after extrastyle to correctly override default styling -->
+  <!--
+  <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet"/>
+  <link href="{% static 'bootstrap/css/bootstrap-responsive.min.css' %}" rel="stylesheet"/>
+  -->
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" media="screen" rel="stylesheet"/>
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" type="text/css" href="{% static 'admin/css/overrides.css' %}"/>
+  <style type="text/css">
+    body {
+      padding-top: 60px;
+      padding-bottom: 40px;
+    }
+  </style>
 
-    <!-- <link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "admin/css/base.css" %}{% endblock %}" /> -->
-    <script type="text/javascript">
-    //<![CDATA[
-        window.__admin_media_prefix__ = "{% filter escapejs %}{% static "admin/" %}{% endfilter %}";
-    //]]>
-    </script>
-    <script src="{% static "admin/js/jquery-1.9.1.min.js" %}"></script>
-    <script src="{% static "admin/js/jquery-migrate-1.2.1.min.js" %}"></script>
-    <script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
+  <!-- <link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static 'admin/css/base.css' %}{% endblock %}" /> -->
+  <script type="text/javascript">
+  //<![CDATA[
+      window.__admin_media_prefix__ = "{% filter escapejs %}{% static 'admin/' %}{% endfilter %}";
+  //]]>
+  </script>
+  <!--
+  <script src="{% static "admin/js/jquery-1.9.1.min.js" %}"></script>
+  <script src="{% static "admin/js/jquery-migrate-1.2.1.min.js" %}"></script>
+  <script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
+  -->
+  <script src="//code.jquery.com/jquery.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 
-    {% block extrahead %}{% endblock %}
+  {% block extrahead %}{% endblock %}
 
-    {% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
-    <script type="text/javascript">
-    //<![CDATA[
-            (function($) {
-                $(document).ready(function() {
-                    $('input[type="submit"]').addClass('btn');
-                    $('[title]').tooltip();
-                });
-            }(jQuery));
-    //]]>
-    </script>
+  {% include 'autocomplete_light/static.html' %}
+
+  {% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
+  <script type="text/javascript">
+  //<![CDATA[
+    (function($) {
+      $(document).ready(function() {
+        $('input[type="submit"]').addClass('btn');
+        $('[title]').tooltip();
+      });
+    }(jQuery));
+  //]]>
+  </script>
 </head>
 {% load i18n %}
 
@@ -48,117 +59,121 @@
 
 <!-- Container -->
 <div class="container-fluid">
+  {% if not is_popup %}
+  <!-- Header -->
+  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a style="font:size: 1em;" class="navbar-brand" href="/">Site</a>
+      </div>
+      <div class="collapse navbar-collapse" id="navbar-collapse">
 
-    {% if not is_popup %}
-    <!-- Header -->
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="navbar-inner">
-            <div class="container-fluid">
-                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+        <ul class="nav navbar-nav">
+          <li>
+          {% block branding %}{% endblock %}
+          </li>
+        </ul>
+
+        <!-- models, user -->
+        <ul class="nav navbar-nav navbar-right">
+          {% if user.is_active and user.is_staff %}
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans 'Welcome,' %} <strong>{% filter force_escape %}{% firstof user.get_short_name user.get_username user.first_name user.username %}{% endfilter %}</strong> <b class="caret"></b></a>
+            <ul class="dropdown-menu pull-right">
+              {% if user.has_usable_password %}
+              <li><a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a></li>
+              {% endif %}
+              <li><a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a></li>
+            </ul>
+          </li>
+          {% block languages %}
+            {% language_selector %}
+          {% endblock languages %}
+          {% block logs %}
+          <li class="dropdown" id="recent-actions-module">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans 'Recent Actions' %} <b class="caret"></b></a>
+            {% load log %}
+            {% get_admin_log 10 as admin_log for_user user %}
+            <ul class="dropdown-menu pull-right">
+              {% for entry in admin_log %}
+              <li class="{% if entry.is_addition %}addlink{% endif %}{% if entry.is_change %}changelink{% endif %}{% if entry.is_deletion %}deletelink{% endif %}">
+                <a href="{% if entry.is_deletion or not entry.get_admin_url %}#{% else %}{{ entry.get_admin_url }}{% endif %}">
+                  <i class="icon-{% if entry.is_addition %}plus{% endif %}{% if entry.is_change %}edit{% endif %}{% if entry.is_deletion %}remove{% endif %}"></i>
+                  {{ entry.object_repr }}
+                  {% if entry.content_type %}
+                  <span class="mini quiet">({% filter capfirst %}{% trans entry.content_type.name %}{% endfilter %})</span>
+                  {% else %}
+                  <span class="mini quiet">({% trans 'Unknown content' %})</span>
+                  {% endif %}
                 </a>
-                {% block branding %}{% endblock %}
-                <div class="nav-collapse collapse pull-right">
-                    <ul class="nav">
-                        {% if user.is_active and user.is_staff %}
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans 'Welcome,' %} <strong>{% filter force_escape %}{% firstof user.get_short_name user.get_username user.first_name user.username %}{% endfilter %}</strong> <b class="caret"></b></a>
-                            <ul class="dropdown-menu pull-right">
-                                {% if user.has_usable_password %}
-                                <li><a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a></li>
-                                {% endif %}
-                                <li><a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a></li>
-                            </ul>
-                        </li>
-                        {% block languages %}
-                        <li class="divider-vertical"></li>
-                        {% language_selector %}
-                        {% endblock languages %}
-                        {% block logs %}
-                        <li class="dropdown" id="recent-actions-module">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans 'Recent Actions' %} <b class="caret"></b></a>
-                            {% load log %}
-                            {% get_admin_log 10 as admin_log for_user user %}
-                            <ul class="dropdown-menu pull-right">
-                                {% for entry in admin_log %}
-                                <li class="{% if entry.is_addition %}addlink{% endif %}{% if entry.is_change %}changelink{% endif %}{% if entry.is_deletion %}deletelink{% endif %}">
-                                    <a href="{% if entry.is_deletion or not entry.get_admin_url %}#{% else %}{{ entry.get_admin_url }}{% endif %}">
-                                        <i class="icon-{% if entry.is_addition %}plus{% endif %}{% if entry.is_change %}edit{% endif %}{% if entry.is_deletion %}remove{% endif %}"></i>
-                                        {{ entry.object_repr }}
-                                        {% if entry.content_type %}
-                                        <span class="mini quiet">({% filter capfirst %}{% trans entry.content_type.name %}{% endfilter %})</span>
-                                        {% else %}
-                                        <span class="mini quiet">({% trans 'Unknown content' %})</span>
-                                        {% endif %}
-                                    </a>
-                                </li>
-                                {% empty %}
-                                <li class="disabled"><a href="#">{% trans 'None available' %}</a></li>
-                                {% endfor %}
-                            </ul>
-                        </li>
-                        {% endblock %}
-                        {% block userlinks %}
-                        {% url 'django-admindocs-docroot' as docsroot %}
-                        {% if docsroot %}
-                        <li class="divider-vertical"></li>
-                        <li><a href="{{ docsroot }}">{% trans 'Documentation' %}</a></li>
-                        {% endif %}
-                        {% endblock %}
-                        {% endif %}
-                        {% block nav-global %}{% endblock %}
-                    </ul>
-                </div><!--/.nav-collapse -->
-            </div>
-        </div>
+              </li>
+              {% empty %}
+              <li class="disabled"><a href="#">{% trans 'None available' %}</a></li>
+              {% endfor %}
+            </ul>
+          </li>
+          {% endblock %}
+          {% block userlinks %}
+          {% url 'django-admindocs-docroot' as docsroot %}
+          {% if docsroot %}
+          <li class="divider-vertical"></li>
+          <li><a href="{{ docsroot }}">{% trans 'Documentation' %}</a></li>
+          {% endif %}
+          {% endblock %}
+          {% endif %}
+          {% block nav-global %}{% endblock %}
+        </ul>
+      </div><!--/.nav-collapse -->
     </div>
-    <!-- END Header -->
-    <div class="row-fluid">
-        <div class="span12">
-            {% block breadcrumbs %}
-            {% endblock %}
+  </nav><!-- END Nav -->
+
+  <!-- breadcrumbs -->
+  <div class="row">
+    <div class="col-sm-12">
+      {% block breadcrumbs %}
+      {% endblock %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Content -->
+  <div id="content" class="{% block coltype %}colM{% endblock %}">
+    <h1>
+      {% block pretitle %}{% endblock %}
+      {% block content_title %}{% if title %}{% render_with_template_if_exist title|lower|add:"/admin_app_name.html" title %}{% endif %}{% endblock %}
+    </h1>
+    {% block navbar %}
+    {% block object-tools %}{% endblock %}
+    {% endblock navbar %}
+
+    {% block messages %}
+    {% if messages %}
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="alert alert-info">
+          <ul class="unstyled">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+          </ul>
         </div>
+      </div>
     </div>
     {% endif %}
+    {% endblock messages %}
 
-    <!-- Content -->
-    <div id="content" class="{% block coltype %}colM{% endblock %}">
-        {% block navbar %}
-        <div class="row-fluid">
-            <div class="navbar">
-                <div class="navbar-inner">
-                    {% block pretitle %}{% endblock %}
-                    {% block content_title %}{% if title %}<a class="brand">{% render_with_template_if_exist title|lower|add:"/admin_app_name.html" title %}</a>{% endif %}{% endblock %}
-                    {% block object-tools %}{% endblock %}
-                </div>
-            </div>
-        </div>
-        {% endblock navbar %}
+    {% block content %}{{ content }}{% endblock %}
+    {% block sidebar %}{% endblock %}
+  </div>
+  <!-- END Content -->
 
-        {% block messages %}
-        {% if messages %}
-        <div class="row-fluid">
-            <div class="span12">
-                <div class="alert alert-info">
-                    <ul class="unstyled">
-                        {% for message in messages %}
-                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-        </div>
-        {% endif %}
-        {% endblock messages %}
-
-        {% block content %}{{ content }}{% endblock %}
-        {% block sidebar %}{% endblock %}
-    </div>
-    <!-- END Content -->
-
-    {% block footer %}<footer id="footer"></footer>{% endblock %}
+  {% block footer %}<footer id="footer"></footer>{% endblock %}
 </div>
 <!-- END Container -->
 
