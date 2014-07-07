@@ -1,3 +1,4 @@
+{% load bootstrap3 %}
 <fieldset class="_module _aligned" id="fieldset-{{ forloop.counter }}" style="background:transparent">
   {% if fieldset.name %}
   <legend>
@@ -44,7 +45,7 @@
             </div>
           </div>
           <div class="checkbox col-sm-5">
-            {% if field.field.help_text %}{{ field.field.help_text|safe }}{% endif %} {{ field.field }}
+            {% bootstrap_field field.field show_label=False %}
           </div>
         {% else %}
           <div class="col-sm-3">
@@ -56,12 +57,9 @@
             {% if field.is_readonly %}
               <p>{{ field.contents }}</p>
             {% else %}
-                {{ field.field }}
+                {% bootstrap_field field.field show_label=False %}
             {% endif %}
             {% if not field.is_readonly and field.errors %}<span class="help-inline">{{ field.errors|striptags }}</span>{% endif %}
-            {% if field.field.help_text %}
-              <span class="help-block">{{ field.field.help_text|safe }}</span>
-            {% endif %}
           </div>
         {% endif %}
 

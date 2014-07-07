@@ -48,8 +48,9 @@
 {% endwith %}
 
 
+<!-- set no html5 form validation because validates '*__prefix__*' fields - TODO find a way to bypass these -->
 <form class="form-horizontal" {% if has_file_field %}enctype="multipart/form-data" {% endif %}action="{{ form_url }}"
-      method="post" id="{{ opts.module_name }}_form" role="form">
+      method="post" id="{{ opts.module_name }}_form" role="form" novalidate>
   {% csrf_token %}
   {% block form_top %}{% endblock %}
 
@@ -58,7 +59,7 @@
   </div>
 
   {% if errors %}
-  <div class="alert alert-error">
+  <div class="alert alert-danger">
       {% blocktrans count counter=errors|length %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktrans %}
       {{ adminform.form.non_field_errors }}
   </div>

@@ -1,11 +1,11 @@
-{% load i18n admin_static admin_modify %}
+{% load i18n admin_static admin_modify bootstrap3 %}
 <div class="_inline-group" id="{{ inline_admin_formset.formset.prefix }}-group">
   <div class="tabular inline-related {% if forloop.last %}last-related{% endif %}">
     {{ inline_admin_formset.formset.management_form }}
     <fieldset class="module" style="border-top: 1px solid #efefef;padding-top:1em;margin-top:1em">
      <h4>{{ inline_admin_formset.opts.verbose_name_plural|capfirst }}</h4>
      {{ inline_admin_formset.formset.non_form_errors }}
-     <table style="margin-top: 1em" class="table table-striped table-bordered">
+     <table style="margin-top: 1em" class="table inline table-striped table-bordered">
        <thead
            {% if not inline_admin_formset.fields|length %}
              style="display:none"
@@ -50,27 +50,25 @@
                 empty-form
               {% endif %}"
                id="{{ inline_admin_formset.formset.prefix }}-{% if not forloop.last %}{{ forloop.counter0 }}{% else %}empty{% endif %}">
-          <!-- to figure out what this field does, in my usage it displays empty of useless -->
+          <!-- to figure out what this field does, in my usage it displays at most a title and admin url -->
           <!--
           <td class="original">
             {% if inline_admin_formset.opts.sortable_field_name %}
-            <span class="btn btn-mini drag-handler pull-left"><i class="icon-move"></i></span>
+              <span class="btn btn-mini drag-handler pull-left"><i class="icon-move"></i></span>
             {% endif %}
-            {% if inline_admin_form.original or inline_admin_form.show_url %}<p>
-            {% if inline_admin_form.original %} {{ inline_admin_form.original }}{% endif %}
-            {% if inline_admin_form.show_url %}<a href="../../../r/{{ inline_admin_form.original_content_type_id }}/{{ inline_admin_form.original.id }}/">{% trans "View on site" %}</a>{% endif %}
-              </p>{% endif %}
-            {% if inline_admin_form.has_auto_field or inline_admin_form.needs_explicit_pk_field %}{{ inline_admin_form.pk_field.field }}{% endif %}
-            {{ inline_admin_form.fk_field.field }}
-            {% spaceless %}
-            {% for fieldset in inline_admin_form %}
-              {% for line in fieldset %}
-                {% for field in line %}
-                  {% if field.is_hidden %} {{ field.field }} {% endif %}
-                {% endfor %}
-              {% endfor %}
-            {% endfor %}
-            {% endspaceless %}
+            {% if inline_admin_form.original or inline_admin_form.show_url %}
+              <p>
+                {% if inline_admin_form.original %}
+                  {{ inline_admin_form.original }}
+                {% endif %}
+                {% if inline_admin_form.show_url %}
+                  <a href="../../../r/{{ inline_admin_form.original_content_type_id }}/{{ inline_admin_form.original.id }}/">
+                  {% trans "View on site" %}
+                  </a>
+                {% endif %}
+              </p>
+            {% endif %}
+
           </td> -->
           {% for fieldset in inline_admin_form %}
             {% for line in fieldset %}
@@ -82,7 +80,14 @@
                     {% if field.errors %}
                     <div class="alert alert-error">{{ field.errors|striptags }}</div>
                     {% endif %}
-                    {{ field.field }}
+                    {% bootstrap_field field.field show_label=False %}
+                {% endif %}
+                {% if field.is_hidden %} {{ field.field }} {% endif %}
+                {% if forloop.first %}
+                  {% if inline_admin_form.has_auto_field or inline_admin_form.needs_explicit_pk_field %}
+                    {{ inline_admin_form.pk_field.field }}
+                  {% endif %}
+                  {{ inline_admin_form.fk_field.field }}
                 {% endif %}
                 </td>
               {% endfor %}
@@ -105,6 +110,10 @@
 (function($) {
     $(document).ready(function($) {
         var rows = "#{{ inline_admin_formset.formset.prefix }}-group .tabular.inline-related tbody tr";
+
+        var focusFirst = function() {
+           $('#{{ inline_admin_formset.formset.prefix }}-group input:visible:not(.offscreen):first').focus();
+        }
         var alternatingRows = function(row) {
             $(rows).not(".add-row").removeClass("row1 row2")
                 .filter(":even").addClass("row1").end()
@@ -112,12 +121,29 @@
         }
         var showHeader = function() {
           $('#{{ inline_admin_formset.formset.prefix }}-group thead').show();
+          setTimeout(focusFirst, 200);
+
         }
         var reinitDateTimeShortCuts = function() {
             // Reinitialize the calendar and clock widgets by force
             if (typeof DateTimeShortcuts != "undefined") {
                 $(".datetimeshortcuts").remove();
                 DateTimeShortcuts.init();
+            }
+        }
+        var initAutocompletes = function(row) {
+            // Initialize the autocompletes
+            if (typeof AutocompleteSearch != "undefined"){
+              row.find('.autocomplete-select').each(function(idx, value) {
+                var title = $($(value).parent().find('label').get(0)).html()
+                AutocompleteSearch.init($(value).attr('id'), $(value).attr('name'), title);
+              });
+            }
+            if (typeof AutocompleteMultipleSearch != "undefined"){
+              row.find('.autocomplete-multipleselect').each(function(idx, value) {
+                var title = $($(value).parent().find('label').get(0)).html()
+                AutocompleteMultipleSearch.init($(value).attr('id'), $(value).attr('name'), title);
+              });
             }
         }
         var updateSelectFilter = function() {
@@ -161,6 +187,7 @@
                 reinitDateTimeShortCuts();
                 updateSelectFilter();
                 alternatingRows(row);
+                initAutocompletes(row);
                 showHeader();
             })
         });

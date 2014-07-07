@@ -1,5 +1,8 @@
 /* overrides to default admin style */
 
+label {
+  font-size: 100%;
+}
 a:active,
 a:focus {
     outline: none;
@@ -65,6 +68,31 @@ td.action-checkbox {
 
 .tooltip.in {opacity: 1} /* Hard to see against black text otherwise */
 
+#content h1 {
+margin-top: 0;
+}
+
+#result_list h6 {
+font-size: 110%;
+margin: 0;
+}
+
+span.ui-helper-hidden-accessible {
+  opacity: 0.6;
+  position: relative;
+}
+table.table.inline td {
+padding: 8px 22px;
+}
+table.table.inline td div.form-group {
+margin-bottom: 0;
+}
+a.add-another {
+float:right;
+margin-top: .5em;
+margin-right: .2em;
+}
+
 /* add submenus to bootstrap3 */
 .dropdown-submenu{position:relative;}
 .dropdown-submenu>.dropdown-menu{top:0;left:100%;margin-top:-6px;margin-left:-1px;-webkit-border-radius:0 6px 6px 6px;-moz-border-radius:0 6px 6px 6px;border-radius:0 6px 6px 6px;}
@@ -72,3 +100,14 @@ td.action-checkbox {
 .dropdown-submenu>a:after{display:block;content:" ";float:right;width:0;height:0;border-color:transparent;border-style:solid;border-width:5px 0 5px 5px;border-left-color:#cccccc;margin-top:5px;margin-right:-10px;}
 .dropdown-submenu:hover>a:after{border-left-color:#ffffff;}
 .dropdown-submenu.pull-left{float:none;}.dropdown-submenu.pull-left>.dropdown-menu{left:-100%;margin-left:10px;-webkit-border-radius:6px 0 6px 6px;-moz-border-radius:6px 0 6px 6px;border-radius:6px 0 6px 6px;}
+
+/* add a spin class */
+.spin{
+   -webkit-transform-origin: 50% 50%;
+   transform-origin:50% 50%;
+   -ms-transform-origin:50% 50%; /* IE 9 */
+   -webkit-animation: spin 1s infinite linear;
+   -moz-animation: spin 1s infinite linear;
+   -o-animation: spin 1s infinite linear;
+   animation: spin 1s infinite linear;
+}

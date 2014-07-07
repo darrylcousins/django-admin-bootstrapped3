@@ -12,8 +12,9 @@
   <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet"/>
   <link href="{% static 'bootstrap/css/bootstrap-responsive.min.css' %}" rel="stylesheet"/>
   -->
-  <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" media="screen" rel="stylesheet"/>
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet"/>
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/themes/smoothness/jquery-ui.css" />
   <link rel="stylesheet" type="text/css" href="{% static 'admin/css/overrides.css' %}"/>
   <style type="text/css">
     body {
@@ -39,8 +40,6 @@
 
   {% block extrahead %}{% endblock %}
 
-  {% include 'autocomplete_light/static.html' %}
-
   {% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
   <script type="text/javascript">
   //<![CDATA[
@@ -58,7 +57,7 @@
 <body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}">
 
 <!-- Container -->
-<div class="container-fluid">
+<div id="container" class="container-fluid">
   {% if not is_popup %}
   <!-- Header -->
   <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">

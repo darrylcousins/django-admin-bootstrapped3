@@ -58,56 +58,18 @@
 {% block coltype %}flex{% endblock %}
 
 {% block object-tools %}
-<form class="" id="changelist-form" action="" method="post"
-<!-- object tools -->
 <div class="row">
-  <div class="col-sm-5">
-    <ul class="object-tools list-inline">
-        {% block object-tools-items %}
-        {% if has_add_permission %}
-        <li>
-        <a href="{% url cl.opts|admin_urlname:'add' %}{% if is_popup %}?_popup=1{% endif %}" class="btn btn-primary">
-            <i class="icon-plus icon-white"></i> {% blocktrans with cl.opts.verbose_name as name %}Add {{ name }}{% endblocktrans %}
-        </a>
-        </li>
-        {% endif %}
-        {% endblock %}
-    </ul>
-  </div>
-
-  <div class="col-sm-5">
-    {% if action_form and actions_on_top and cl.full_result_count %}
-        {% admin_actions %}
-    {% endif %}
-  </div>
-
-  <div class="col-sm-2">
+  <div class="col-sm-3">
     {% block search %}{% search_form cl %}{% endblock %}
-    {% if cl.has_filters %}
-    <ul class="nav pull-right">
-        <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans 'Filter' %} <b class="caret"></b></a>
-            <ul class="dropdown-menu pull-right">
-                {% for spec in cl.filter_specs %}
-                    {% admin_list_filter cl spec %}
-                {% endfor %}
-            </ul>
-        </li>
-    </ul>
-    {% endif %}
-  </div>
-</div>
-{% endblock %}
-
-{% block content %}
-<div class="row">
-  <div class="col-sm-6">
-    {% block date_hierarchy %}
-        {% date_hierarchy cl %}
-    {% endblock %}
   </div>
 
-  <div class="col-sm-6">
+  <div class="col-sm-5">
+      {% block date_hierarchy %}
+          {% date_hierarchy cl %}
+      {% endblock %}
+  </div>
+
+  <div class="col-sm-4">
     {% if cl.formset %}
         <div>{{ cl.formset.management_form }}</div>
     {% else %}
@@ -115,6 +77,51 @@
     {% endif %}
   </div>
 </div>
+
+<div class="row">
+  <form class="" id="changelist-form" action="" method="post"
+    {% csrf_token %}
+
+  <div class="col-sm-3">
+    {% if action_form and actions_on_top and cl.full_result_count %}
+        {% admin_actions %}
+    {% endif %}
+  </div>
+
+  <div class="col-sm-5">
+    <ul class="object-tools list-inline">
+        {% block object-tools-items %}
+          {% if has_add_permission %}
+            <li>
+            <a href="{% url cl.opts|admin_urlname:'add' %}{% if is_popup %}?_popup=1{% endif %}" class="btn btn-primary">
+                <i class="icon-plus icon-white"></i> {% blocktrans with cl.opts.verbose_name as name %}Add {{ name }}{% endblocktrans %}
+            </a>
+            </li>
+          {% endif %}
+        {% endblock %}
+    </ul>
+  </div>
+
+  <div class="col-sm-4">
+    {% if cl.has_filters %}
+      <ul class="nav">
+          <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans 'Filter' %} <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                  {% for spec in cl.filter_specs %}
+                      {% admin_list_filter cl spec %}
+                  {% endfor %}
+              </ul>
+          </li>
+      </ul>
+    {% endif %}
+  </div>
+
+</div>
+
+{% endblock %}
+
+{% block content %}
 
 <div id="content-main" class="row">
   <div class="col-sm-12">
