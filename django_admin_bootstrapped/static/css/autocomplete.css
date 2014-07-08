@@ -36,7 +36,8 @@ span.ui-helper-hidden-accessible {
   padding: 1em;
 }
 .ui-widget-content {
-  background: none !important;
+  background-color: #fff !important;
+  background-image: none !important;
 }
 span.ui-helper-hidden-accessible {
   opacity: 0.6;
