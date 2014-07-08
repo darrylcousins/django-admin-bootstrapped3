@@ -76,7 +76,9 @@ margin-top: 0;
 font-size: 110%;
 margin: 0;
 }
-
+.ui-widget-content {
+  background: none !important;
+}
 span.ui-helper-hidden-accessible {
   opacity: 0.6;
   position: relative;

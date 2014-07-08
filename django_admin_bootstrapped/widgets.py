@@ -95,9 +95,7 @@ class AutocompleteSelectWidget(forms.Select):
 
     class Media:
         js = (
-            '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js',
             settings.STATIC_URL + 'js/autocomplete_select.js',
-            settings.STATIC_URL + 'js/loading.js',
             )
         css = {
             'screen': (settings.STATIC_URL + 'css/autocomplete.css', )
@@ -180,9 +178,7 @@ class AutocompleteSelectMulitpleWidget(forms.SelectMultiple):
 
     class Media:
         js = (
-            '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js',
             settings.STATIC_URL + 'js/autocomplete_multipleselect.js',
-            settings.STATIC_URL + 'js/loading.js',
             )
         css = {
             'screen': (settings.STATIC_URL + 'css/autocomplete.css', )

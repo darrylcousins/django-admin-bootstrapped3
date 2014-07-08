@@ -35,5 +35,11 @@ span.ui-helper-hidden-accessible {
   opacity: 0.6;
   padding: 1em;
 }
-
+.ui-widget-content {
+  background: none !important;
+}
+span.ui-helper-hidden-accessible {
+  opacity: 0.6;
+  position: relative;
+}
 
