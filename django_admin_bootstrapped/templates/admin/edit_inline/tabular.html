@@ -7,7 +7,7 @@
      {{ inline_admin_formset.formset.non_form_errors }}
      <table style="margin-top: 1em" class="table inline table-striped table-bordered">
        <thead
-           {% if not inline_admin_formset.fields|length %}
+           {% if not inline_admin_formset|length %}
              style="display:none"
            {% endif %}
          >
@@ -119,10 +119,11 @@
                 .filter(":even").addClass("row1").end()
                 .filter(rows + ":odd").addClass("row2");
         }
-        var showHeader = function() {
+        var showHeader = function(init) {
           $('#{{ inline_admin_formset.formset.prefix }}-group thead').show();
-          setTimeout(focusFirst, 200);
-
+          if (typeof init == 'undefined') {
+            setTimeout(focusFirst, 200);
+          }
         }
         var reinitDateTimeShortCuts = function() {
             // Reinitialize the calendar and clock widgets by force
@@ -174,6 +175,11 @@
                 }
             });
         }
+
+        if ($(rows).length > 1) {
+          showHeader(true);
+        }
+
         $(rows).formset({
             prefix: "{{ inline_admin_formset.formset.prefix }}",
             addText: "{% blocktrans with verbose_name=inline_admin_formset.opts.verbose_name|title %}Add another {{ verbose_name }}{% endblocktrans %}",

@@ -138,7 +138,7 @@ class AutocompleteSelectWidget(forms.Select):
             final_attrs['value'] = force_text(self._format_value(str_value))
         final_attrs['class'] = 'autocomplete-select form-control'
         final_attrs['style'] = 'display:inline-block'
-        final_attrs['placeholder'] = str(_('Search ...'))
+        final_attrs['placeholder'] = str(_('Search ')) + str(title) + ' ...'
 
         output = []
         output.append('<input id="%(name)s_select" type="hidden" name="%(name)s_select" value="%(value)s">' % dict(

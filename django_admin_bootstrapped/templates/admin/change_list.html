@@ -45,7 +45,7 @@
     </li>
     <li>
       <a href="{% url 'admin:app_list' app_label=opts.app_label %}">
-        {% render_with_template_if_exist opts.module_name|lower|add:"/admin_app_name.html" module_name|capfirst %}
+        {% render_with_template_if_exist opts.module_name|lower|add:"/admin_app_name.html" opts.app_label|capfirst %}
       </a>
     </li>
     <li>
@@ -88,7 +88,7 @@
     {% endif %}
   </div>
 
-  <div class="col-sm-5">
+  <div class="col-sm-7">
     <ul class="object-tools list-inline">
         {% block object-tools-items %}
           {% if has_add_permission %}
@@ -102,7 +102,7 @@
     </ul>
   </div>
 
-  <div class="col-sm-4">
+  <div class="col-sm-2">
     {% if cl.has_filters %}
       <ul class="nav">
           <li class="dropdown">
