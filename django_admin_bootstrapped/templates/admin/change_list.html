@@ -58,136 +58,93 @@
 {% block coltype %}flex{% endblock %}
 
 {% block object-tools %}
-<div class="row">
-  <div class="col-sm-3">
-    {% block search %}{% search_form cl %}{% endblock %}
-  </div>
-
-  <div class="col-sm-5">
-      {% block date_hierarchy %}
-          {% date_hierarchy cl %}
-      {% endblock %}
-  </div>
-
-  <div class="col-sm-4">
-    {% if cl.formset %}
-        <div>{{ cl.formset.management_form }}</div>
-    {% else %}
-    &nbsp;
-    {% endif %}
-  </div>
-</div>
-
-<div class="row">
-  <form class="" id="changelist-form" action="" method="post"
-    {% csrf_token %}
-
-  <div class="col-sm-3">
-    {% if action_form and actions_on_top and cl.full_result_count %}
-        {% admin_actions %}
-    {% endif %}
-  </div>
-
-  <div class="col-sm-7">
-    <ul class="object-tools list-inline">
+    <ul class="object-tools pull-left navbar-form list-unstyled">
         {% block object-tools-items %}
-          {% if has_add_permission %}
-            <li>
-            <a href="{% url cl.opts|admin_urlname:'add' %}{% if is_popup %}?_popup=1{% endif %}" class="btn btn-primary">
-                <i class="icon-plus icon-white"></i> {% blocktrans with cl.opts.verbose_name as name %}Add {{ name }}{% endblocktrans %}
-            </a>
-            </li>
-          {% endif %}
+        {% if has_add_permission %}
+        <li>
+        <a href="{% url cl.opts|admin_urlname:'add' %}{% if is_popup %}?_popup=1{% endif %}" class="btn btn-primary">
+            <span class="glyphicon glyphicon-plus"></span> {% blocktrans with cl.opts.verbose_name as name %}Add {{ name }}{% endblocktrans %}
+        </a>
+        </li>
+        {% endif %}
         {% endblock %}
     </ul>
-  </div>
 
-  <div class="col-sm-2">
     {% if cl.has_filters %}
-      <ul class="nav">
-          <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans 'Filter' %} <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                  {% for spec in cl.filter_specs %}
-                      {% admin_list_filter cl spec %}
-                  {% endfor %}
-              </ul>
-          </li>
-      </ul>
+    <ul class="nav navbar-nav pull-right">
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans 'Filter' %} <span class="caret"></span></a>
+            <ul class="dropdown-menu pull-right">
+                {% for spec in cl.filter_specs %}
+                    {% admin_list_filter cl spec %}
+                {% endfor %}
+            </ul>
+        </li>
+    </ul>
     {% endif %}
-  </div>
+    {% block search %}{% search_form cl %}{% endblock %}
 
-</div>
-
-{% endblock %}
+{% endblock object-tools %}
 
 {% block content %}
+<form class="" id="changelist-form" action="" method="post"{% if cl.formset.is_multipart %} enctype="multipart/form-data"{% endif %}>{% csrf_token %}
 
-<div id="content-main" class="row">
-  <div class="col-sm-12">
-    {% if cl.formset.errors %}
-    <div class="alert alert-danger">
-      <p class="errornote">
-        {% blocktrans count cl.formset.errors|length as counter %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktrans %}
-      </p>
-      {{ cl.formset.non_form_errors }}
-    </div>
+{% if cl.formset.errors %}
+<div class="alert alert-danger">
+  <p class="errornote">
+    {% blocktrans count cl.formset.errors|length as counter %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktrans %}
+  </p>
+  {{ cl.formset.non_form_errors }}
+</div>
+{% endif %}
+
+
+{% with app_name=cl.opts.module_name|lower|slugify %}
+    {% render_with_template_if_exist cl.opts.app_label|lower|add:"/admin_app_"|add:app_name|add:"_description.html" "" %}
+{% endwith %}
+
+{% if action_form and actions_on_top and cl.full_result_count %}
+<div class='pull-right'>{% admin_actions %}</div>
+{% endif %}
+
+<div id="content-main">
+  <div class="module{% if cl.has_filters %} filtered{% endif %}" id="_changelist">
+    {% block date_hierarchy %}
+        {% date_hierarchy cl %}
+    {% endblock %}
+
+    {% if cl.formset %}
+        <div>{{ cl.formset.management_form }}</div>
     {% endif %}
 
-    <!-- load template description from module if exists -->
-    {% with app_name=cl.opts.module_name|lower|slugify %}
-      {% render_with_template_if_exist cl.opts.app_label|lower|add:"/admin_app_"|add:app_name|add:"_description.html" "" %}
-    {% endwith %}
-
-    <!-- vertical spacing -->
-    <div class="control-group">
-      &nbsp;
-    </div>
-
-    <!-- tabulated object list -->
-    <div class="module{% if cl.has_filters %} filtered{% endif %}" id="_changelist">
-        {% if cl.formset.is_multipart %}
-          enctype="multipart/form-data"
-        {% endif %}
-        {% csrf_token %}
-      {% block result_list %}
-          {% result_list cl %}
-      {% endblock %}
-    </div><!-- end tabulated object list -->
-  </div>
-</div>
-
-<!-- actions, pagination  -->
-<div class="row">
-  <div class="col-sm-12">
-    {# {% if cl.formset and cl.result_count %} #}
     <div class="row">
-      <div class="col-sm-4">
-        <div class="navbar">
-          <div class="navbar-inner">
-            <div class="form-inline pull-left">
-              {% if action_form and actions_on_bottom and cl.full_result_count %}
-                  {% admin_actions %}
-              {% endif %}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-8">
-        {% block pagination %}
-            {% pagination cl %}
+      <div class="col-xs-12">
+        {% block result_list %}
+            {% result_list cl %}
         {% endblock %}
       </div>
-      <!--
-      <div class="col-sm-2">
-        <input type="submit" name="_save" class="btn btn-primary default" value="{% trans 'Save' %}"/>
-      </div>
-      -->
     </div>
-    {# {% endif %} #}
   </div>
 </div>
-</form>
+{# {% if cl.formset and cl.result_count %} #}
+<div class="navbar navbar-default">
+  <div class="navbar-inner">
+    <div class="navbar-form pull-left">
+      {% if action_form and actions_on_bottom and cl.full_result_count %}
+        {% admin_actions %}
+      {% endif %}
+    </div>
+    <div class="navbar-form pull-right">
+      <input type="submit" name="_save" class="btn btn-primary default" value="{% trans 'Save' %}"/>
+    </div>
+  </div>
+</div>
+{# {% endif %} #}
+
+{% block pagination %}
+    {% pagination cl %}
 {% endblock %}
+</form>
+{% endblock content %}
 
 

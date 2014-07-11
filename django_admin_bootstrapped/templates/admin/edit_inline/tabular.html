@@ -121,9 +121,9 @@
         }
         var showHeader = function(init) {
           $('#{{ inline_admin_formset.formset.prefix }}-group thead').show();
-          if (typeof init == 'undefined') {
-            setTimeout(focusFirst, 200);
-          }
+          // if (typeof init == 'undefined') {
+          //   setTimeout(focusFirst, 200);
+          // }
         }
         var reinitDateTimeShortCuts = function() {
             // Reinitialize the calendar and clock widgets by force
@@ -134,16 +134,16 @@
         }
         var initAutocompletes = function(row) {
             // Initialize the autocompletes
-            if (typeof AutocompleteSearch != "undefined"){
+            if (typeof AutocompleteSelect != "undefined"){
               row.find('.autocomplete-select').each(function(idx, value) {
                 var title = $($(value).parent().find('label').get(0)).html()
-                AutocompleteSearch.init($(value).attr('id'), $(value).attr('name'), title);
+                new AutocompleteSelect($(value).attr('data-source'), $(value).attr('id'), $(value).attr('name'), title).init();
               });
             }
-            if (typeof AutocompleteMultipleSearch != "undefined"){
+            if (typeof AutocompleteMultipleSelect != "undefined"){
               row.find('.autocomplete-multipleselect').each(function(idx, value) {
                 var title = $($(value).parent().find('label').get(0)).html()
-                AutocompleteMultipleSearch.init($(value).attr('id'), $(value).attr('name'), title);
+                new AutocompleteMultipleSelect($(value).attr('data-source'), $(value).attr('id'), $(value).attr('name'), title).init();
               });
             }
         }
@@ -194,7 +194,7 @@
                 updateSelectFilter();
                 alternatingRows(row);
                 initAutocompletes(row);
-                showHeader();
+                showHeader(false);
             })
         });
     });

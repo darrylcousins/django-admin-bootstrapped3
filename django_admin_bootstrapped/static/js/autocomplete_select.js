@@ -139,8 +139,9 @@
         },
         response: function(event, ui) {
           $(spinner).hide();
-          event.preventDefault();
-          return false;
+          if (!ui.item) {
+            $('#filter-items').html('No results found.');
+          }
         },
         change: function(event, ui) {
           $(modal).modal('hide');

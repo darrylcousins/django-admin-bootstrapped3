@@ -68,24 +68,19 @@ td.action-checkbox {
 
 .tooltip.in {opacity: 1} /* Hard to see against black text otherwise */
 
-#content h1 {
-margin-top: 0;
+div.inline {
+  display:inline-block;
 }
-
-#result_list h6 {
-font-size: 110%;
-margin: 0;
-}
-table.table.inline td {
-padding: 8px 22px;
-}
-table.table.inline td div.form-group {
-margin-bottom: 0;
-}
-a.add-another {
+a.add-another, span.datetimeshortcuts {
 float:right;
 margin-top: .5em;
 margin-right: .2em;
+}
+tr.form-row td {
+padding: 8px 23px !important;
+}
+#content h1 {
+margin-top: 0;
 }
 
 /* add submenus to bootstrap3 */

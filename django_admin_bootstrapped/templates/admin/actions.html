@@ -1,33 +1,34 @@
 {% load i18n bootstrap3 %}
-<div class="form-group">
+<div class="actions" style="display:inline-block;">
   {% for field in action_form %}
-    {% bootstrap_field field show_label=False %}
+    {% bootstrap_field field show_label=False form_group_class="inline" %}
   {% endfor %}
   <button type="submit" class="button btn btn-primary" title="{% trans "Run the selected action" %}"
           name="index" value="{{ action_index|default:0 }}">{% trans "Go" %}</button>
+
   {% if actions_selection_counter %}
-    <script type="text/javascript">
-      var _actions_icnt="{{ cl.result_list|length|default:"0" }}";
-    </script>
-    <span class="action-counter">{{ selection_note }}</span>
+    <script type="text/javascript">var _actions_icnt="{{ cl.result_list|length|default:"0" }}";</script>
+    <span class="action-counter" style="vertical-align:sub">{{ selection_note }}</span>
     {% if cl.result_count != cl.result_list|length %}
-    <!-- these actions appear to be broken TODO: fix them -->
-    <!--
-    <span class="all">{{ selection_note_all }}</span>
-    <span class="question">
-        <a href="javascript:;" data-toggle="tooltip" data-placement="bottom"
-           title="{% trans "Click here to select the objects across all pages" %}">
-          {% blocktrans with cl.result_count as total_count %}Select all {{ total_count }} {{ module_name }}{% endblocktrans %}
-        </a>
-    </span>
-    <span class="clear"><a href="javascript:;">{% trans "Clear selection" %}</a></span>
-    -->
+      <!-- TODO Figure out why these aren't working as expected -->
+      <!--
+      <span class="all" style="vertical-align:sub">{{ selection_note_all }}</span>
+      <span class="question" style="vertical-align:sub">
+          <a class="btn" href="javascript:;" title="{% trans "Click here to select the objects across all pages" %}">{% blocktrans with cl.result_count as total_count %}Select all {{ total_count }} {{ module_name }}{% endblocktrans %}</a>
+      </span>
+      <span class="clear" style="vertical-align:sub"><a class="btn" href="javascript:;">{% trans "Clear selection" %}</a></span>
+      -->
     {% endif %}
   {% endif %}
-<script type="text/javascript">
-$(function() { // equivalent to document.ready
-    var opt = $("select[name=action]").find('option').get(0);
-    $(opt).html('Choose action for selected ...');
-})
-</script>
+
+  <script type="text/javascript">
+  $(function() { // equivalent to document.ready
+      var opt = $("select[name=action]").find('option').get(0);
+      $(opt).html('{% trans "Choose action for selected" %} ...');
+  })
+  </script>
+</div>
+<!-- space -->
+<div class="control-group">
+  &nbsp;
 </div>
