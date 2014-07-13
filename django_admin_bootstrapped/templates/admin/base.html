@@ -43,8 +43,9 @@
   {% block extrahead %}{% endblock %}
 
   {% if cl.model_admin.search_form %}
-    <script src="{% static 'js/autocomplete_base.js' %}"></script>
-    <script src="{% static 'js/autocomplete_search.js' %}"></script>
+    <script src="{% static 'django_autocomplete/js/autocomplete_base.js' %}"></script>
+    <script src="{% static 'django_autocomplete/js/autocomplete_search.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'django_autocomplete/css/autocomplete.css' %}"/>
   {% endif %}
 
   {% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
