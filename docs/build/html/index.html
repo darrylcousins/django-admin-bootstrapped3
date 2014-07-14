@@ -1,0 +1,231 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Welcome to Django Admin Bootstrapped3’s documentation! &mdash; Django Admin Bootstrapped3 0.6 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Django Admin Bootstrapped3 0.6 documentation" href="#" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="#">Django Admin Bootstrapped3 0.6 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="welcome-to-django-admin-bootstrapped3-s-documentation">
+<h1>Welcome to Django Admin Bootstrapped3&#8217;s documentation!<a class="headerlink" href="#welcome-to-django-admin-bootstrapped3-s-documentation" title="Permalink to this headline">¶</a></h1>
+<p>Contents:</p>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+</div>
+<div class="section" id="django-admin-bootstrapped">
+<h1>django-admin-bootstrapped<a class="headerlink" href="#django-admin-bootstrapped" title="Permalink to this headline">¶</a></h1>
+<p>A Django admin theme using Twitter Bootstrap. It doesn&#8217;t need any kind
+of modification on your side, just add it to the installed apps.</p>
+<div class="section" id="credits">
+<h2>Credits<a class="headerlink" href="#credits" title="Permalink to this headline">¶</a></h2>
+<p>This package is a fork of
+<a class="reference external" href="https://github.com/django-admin-bootstrapped/django-admin-bootstrapped">django-admin-bootstrapped</a>. All
+credit goes to <a class="reference external" href="https://riccardo.forina.me/">Riccardo Forina</a> and the other
+contributors. A good deal of the this readme comes from the original repostory.</p>
+</div>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Django <tt class="docutils literal"><span class="pre">&gt;=1.6.x</span></tt>.</li>
+<li>Python <tt class="docutils literal"><span class="pre">3</span></tt></li>
+<li><a class="reference external" href="&lt;https://github.com/dyve/django-bootstrap3&gt;">django-bootstrap3</a></li>
+</ul>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>Simple install into a virtualenv:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ pip install git+https://github.com/darrylcousins/django-admin-bootstrapped3.git
+</pre></div>
+</div>
+<p>Add <tt class="docutils literal"><span class="pre">'django_admin_bootstrapped'</span></tt> into the <tt class="docutils literal"><span class="pre">INSTALLED_APPS</span></tt> list <strong>before</strong>
+<tt class="docutils literal"><span class="pre">'django.contrib.admin'</span></tt></p>
+</div>
+<div class="section" id="build-and-run-test-project">
+<h2>Build and Run Test Project<a class="headerlink" href="#build-and-run-test-project" title="Permalink to this headline">¶</a></h2>
+<p>Get the test project from github:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ git clone https://github.com/darrylcousins/django-project.git
+$ cd django-project
+$ python setup.py develop
+</pre></div>
+</div>
+<p>The test project uses <a class="reference external" href="&lt;https://github.com/dyve/django-bootstrap3&gt;">django-bootstrap3</a> and <a class="reference external" href="&lt;https://github.com/darrylcousins/django-admin-bootstrapped3&gt;">bootstrapped3</a> admin.  these extra
+packages can be installed with:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ pip install -r requirements.txt
+</pre></div>
+</div>
+<p>The test project has some tests:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ python manage.py test project
+</pre></div>
+</div>
+<p>The tables and sample data can be installed with:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ python manage.py migrate
+$ python manage.py loaddata project/fixtures/project.json
+</pre></div>
+</div>
+<p>And can be run with:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ python manage.py runserver 9000
+</pre></div>
+</div>
+<p>There are no urls beyond the admin screens and api json views. It attempts to
+demonstrate the autocomplete widgets.</p>
+</div>
+<div class="section" id="included">
+<h2>Included<a class="headerlink" href="#included" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="autocomplete-widgets">
+<h3>Autocomplete Widgets<a class="headerlink" href="#autocomplete-widgets" title="Permalink to this headline">¶</a></h3>
+<p>See <a class="reference external" href="&lt;https://github.com/darrylcousins/django-autocomplete&gt;">django-autocomplete</a>.</p>
+</div>
+<div class="section" id="translate-change-an-application-name-with-a-template">
+<h3>Translate/change an application name with a template<a class="headerlink" href="#translate-change-an-application-name-with-a-template" title="Permalink to this headline">¶</a></h3>
+<p>Create a file named <tt class="docutils literal"><span class="pre">admin_app_name.html</span></tt> into the application&#8217;s
+template folder. Eg: <tt class="docutils literal"><span class="pre">project/templates/admin_app_name.html</span></tt>. You can also change the
+default Django Administration title, just add a <tt class="docutils literal"><span class="pre">admin_title.html</span></tt>
+file into your <tt class="docutils literal"><span class="pre">project/templates/admin/</span></tt> folder.</p>
+</div>
+<div class="section" id="add-custom-html-to-the-list-view-or-change-form-of-any-model-with-a-template">
+<h3>Add custom html to the list view or change form of any model with a template<a class="headerlink" href="#add-custom-html-to-the-list-view-or-change-form-of-any-model-with-a-template" title="Permalink to this headline">¶</a></h3>
+<p>You can inject custom html on top of any change form creating a template
+named <tt class="docutils literal"><span class="pre">admin_model_MODELNAME_change_form.html</span></tt> into the application&#8217;s
+template folder. Likewise the title of the model list view can be changed by adding a template called
+<tt class="docutils literal"><span class="pre">admin_model_MODELNAME_title.html</span></tt> into the application&#8217;s template folder.</p>
+</div>
+<div class="section" id="inline-sortable">
+<h3>Inline sortable<a class="headerlink" href="#inline-sortable" title="Permalink to this headline">¶</a></h3>
+<p>You can add drag&amp;drop sorting capability to any inline with a couple of
+changes to your code.</p>
+<p>First, add a <tt class="docutils literal"><span class="pre">position</span></tt> field in your model (and sort your model
+accordingly), for example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">TestSortable</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">that</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">TestMe</span><span class="p">)</span>
+    <span class="n">position</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveSmallIntegerField</span><span class="p">(</span><span class="s">&quot;Position&quot;</span><span class="p">)</span>
+    <span class="n">test_char</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;position&#39;</span><span class="p">,</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>Then in your admin.py create a class to handle the inline using the
+<tt class="docutils literal"><span class="pre">django_admin_bootstrapped.admin.models.SortableInline</span></tt> mixin, like
+this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django_admin_bootstrapped.admin.models</span> <span class="kn">import</span> <span class="n">SortableInline</span>
+<span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">TestSortable</span>
+
+<span class="k">class</span> <span class="nc">TestSortable</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">StackedInline</span><span class="p">,</span> <span class="n">SortableInline</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">TestSortable</span>
+    <span class="n">extra</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>This feature was brought to you by <a class="reference external" href="https://github.com/kwbock">Kyle
+Bock</a>. Thank you Kyle!</p>
+</div>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
+<li><a class="reference internal" href="py-modindex.html"><em>Module Index</em></a></li>
+<li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Welcome to Django Admin Bootstrapped3&#8217;s documentation!</a></li>
+<li><a class="reference internal" href="#django-admin-bootstrapped">django-admin-bootstrapped</a><ul>
+<li><a class="reference internal" href="#credits">Credits</a></li>
+<li><a class="reference internal" href="#requirements">Requirements</a></li>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#build-and-run-test-project">Build and Run Test Project</a></li>
+<li><a class="reference internal" href="#included">Included</a><ul>
+<li><a class="reference internal" href="#autocomplete-widgets">Autocomplete Widgets</a></li>
+<li><a class="reference internal" href="#translate-change-an-application-name-with-a-template">Translate/change an application name with a template</a></li>
+<li><a class="reference internal" href="#add-custom-html-to-the-list-view-or-change-form-of-any-model-with-a-template">Add custom html to the list view or change form of any model with a template</a></li>
+<li><a class="reference internal" href="#inline-sortable">Inline sortable</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="#">Django Admin Bootstrapped3 0.6 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Darryl Cousins.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
