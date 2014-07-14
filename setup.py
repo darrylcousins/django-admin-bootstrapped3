@@ -20,7 +20,7 @@ setup(
     author="Darryl Cousins",
     author_email="darryljcousins@gmail.com",
     name='django-admin-bootstrapped',
-    version='1.6.5',
+    version='0.9',
     description='A Bootstrap theme for Django Admin',
     long_description=open(
         os.path.join(os.path.dirname(__file__), 'README.rst')).read(),
