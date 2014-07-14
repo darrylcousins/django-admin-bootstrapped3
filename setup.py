@@ -30,8 +30,6 @@ setup(
     classifiers=CLASSIFIERS,
     install_requires=[
         'setuptools',
-        'Django>=1.6',
-        'django-bootstrap3'
     ],
     packages=find_packages(),
     include_package_data=True,
