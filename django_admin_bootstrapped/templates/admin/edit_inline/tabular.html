@@ -12,14 +12,12 @@
            {% endif %}
          >
          <tr>
+           {% if inline_admin_formset.opts.sortable_field_name %}
+             <th>&nbsp;</th>
+           {% endif %}
            {% for field in inline_admin_formset.fields %}
              {% if not field.widget.is_hidden %}
              <th
-               {% comment %} {# see my comment below about the first field #}
-                 {% if forloop.first %}
-                   colspan="2"
-                 {% endif %}
-               {% endcomment %}
                {% if field.required %}
                  class="required"
                {% endif %}>
@@ -32,7 +30,7 @@
              {% endif %}
            {% endfor %}
            {% if inline_admin_formset.formset.can_delete %}
-             <th style="text-align: right;">{% trans "Delete?" %}</th>
+             <th>{% trans "Delete?" %}</th>
             {% endif %}
          </tr>
        </thead>
@@ -50,45 +48,29 @@
                 empty-form
               {% endif %}"
                id="{{ inline_admin_formset.formset.prefix }}-{% if not forloop.last %}{{ forloop.counter0 }}{% else %}empty{% endif %}">
-          <!-- to figure out what this field does, in my usage it displays at most a title and admin url -->
-          <!--
-          <td class="original">
-            {% if inline_admin_formset.opts.sortable_field_name %}
-              <span class="btn btn-mini drag-handler pull-left"><i class="icon-move"></i></span>
-            {% endif %}
-            {% if inline_admin_form.original or inline_admin_form.show_url %}
-              <p>
-                {% if inline_admin_form.original %}
-                  {{ inline_admin_form.original }}
-                {% endif %}
-                {% if inline_admin_form.show_url %}
-                  <a href="../../../r/{{ inline_admin_form.original_content_type_id }}/{{ inline_admin_form.original.id }}/">
-                  {% trans "View on site" %}
-                  </a>
-                {% endif %}
-              </p>
-            {% endif %}
-
-          </td> -->
           {% for fieldset in inline_admin_form %}
+              {% if inline_admin_formset.opts.sortable_field_name %}
+              <td><span class="btn btn-sm drag-handler pull-left"><i class="glyphicon glyphicon-move"></i></span></td>
+              {% endif %}
             {% for line in fieldset %}
               {% for field in line %}
                 <td{% if field.field.name %} class="field-{{ field.field.name }}"{% endif %}>
-                {% if field.is_readonly %}
-                    <p>{{ field.contents }}</p>
-                {% else %}
-                    {% if field.errors %}
-                    <div class="alert alert-error">{{ field.errors|striptags }}</div>
+                  {% if forloop.first %}
+                    <!-- add the hidden input fields for related models -->
+                    {% if inline_admin_form.has_auto_field or inline_admin_form.needs_explicit_pk_field %}
+                      {{ inline_admin_form.pk_field.field }}
                     {% endif %}
-                    {% bootstrap_field field.field show_label=False %}
-                {% endif %}
-                {% if field.is_hidden %} {{ field.field }} {% endif %}
-                {% if forloop.first %}
-                  {% if inline_admin_form.has_auto_field or inline_admin_form.needs_explicit_pk_field %}
-                    {{ inline_admin_form.pk_field.field }}
+                    {{ inline_admin_form.fk_field.field }}
                   {% endif %}
-                  {{ inline_admin_form.fk_field.field }}
-                {% endif %}
+                  {% if field.is_readonly %}
+                      <p>{{ field.contents }}</p>
+                  {% else %}
+                      {% if field.errors %}
+                      <div class="alert alert-error">{{ field.errors|striptags }}</div>
+                      {% endif %}
+                      {% bootstrap_field field.field show_label=False %}
+                  {% endif %}
+                  {% if field.is_hidden %} {{ field.field }} {% endif %}
                 </td>
               {% endfor %}
             {% endfor %}
@@ -111,19 +93,10 @@
     $(document).ready(function($) {
         var rows = "#{{ inline_admin_formset.formset.prefix }}-group .tabular.inline-related tbody tr";
 
-        var focusFirst = function() {
-           $('#{{ inline_admin_formset.formset.prefix }}-group input:visible:not(.offscreen):first').focus();
-        }
         var alternatingRows = function(row) {
             $(rows).not(".add-row").removeClass("row1 row2")
                 .filter(":even").addClass("row1").end()
                 .filter(rows + ":odd").addClass("row2");
-        }
-        var showHeader = function(init) {
-          $('#{{ inline_admin_formset.formset.prefix }}-group thead').show();
-          // if (typeof init == 'undefined') {
-          //   setTimeout(focusFirst, 200);
-          // }
         }
         var reinitDateTimeShortCuts = function() {
             // Reinitialize the calendar and clock widgets by force
@@ -131,6 +104,9 @@
                 $(".datetimeshortcuts").remove();
                 DateTimeShortcuts.init();
             }
+        }
+        var showHeader = function(init) {
+          $('#{{ inline_admin_formset.formset.prefix }}-group thead').show();
         }
         var initAutocompletes = function(row) {
             // Initialize the autocompletes
@@ -182,7 +158,7 @@
 
         $(rows).formset({
             prefix: "{{ inline_admin_formset.formset.prefix }}",
-            addText: "{% blocktrans with verbose_name=inline_admin_formset.opts.verbose_name|title %}Add another {{ verbose_name }}{% endblocktrans %}",
+            addText: "<span class='btn btn-primary btn-sm'><i class='glyphicon glyphicon-plus'></i> {% blocktrans with verbose_name=inline_admin_formset.opts.verbose_name|title %}Add another {{ verbose_name }}{% endblocktrans %}</span>",
             formCssClass: "dynamic-{{ inline_admin_formset.formset.prefix }}",
             deleteCssClass: "inline-deletelink",
             deleteText: "{% trans "Remove" %}",
@@ -200,12 +176,12 @@
     });
 })(django.jQuery);
 
-// listener for jquery 1.7.2
+{% if inline_admin_formset.opts.sortable_field_name %}
 (function($) {
-    {% if inline_admin_formset.opts.sortable_field_name %}
     $('tbody').sortable({
         // items: '.dynamic-{{ inline_admin_formset.formset.prefix }}',
         handle: '.drag-handler',
+        axis: 'y',
         items: ".form-row"
     });
     $("#{{ opts.module_name }}_form").submit(function(e) {
@@ -221,6 +197,6 @@
             }
         });
     });
-    {% endif %}
 })(jQuery);
+{% endif %}
 </script>

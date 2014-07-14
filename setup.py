@@ -17,13 +17,14 @@ CLASSIFIERS = [
 ]
 
 setup(
-    author="Riccardo Forina",
-    author_email="riccardo@forina.me",
+    author="Darryl Cousins",
+    author_email="darryljcousins@gmail.com",
     name='django-admin-bootstrapped',
     version='1.6.5',
     description='A Bootstrap theme for Django Admin',
-    long_description=open(os.path.join(os.path.dirname(__file__), 'README.rst')).read(),
-    url='https://github.com/riccardo-forina/django-admin-bootstrapped',
+    long_description=open(
+        os.path.join(os.path.dirname(__file__), 'README.rst')).read(),
+    url='https://github.com/darrylcousins/django-admin-bootstrapped3',
     license='BSD License',
     platforms=['OS Independent'],
     classifiers=CLASSIFIERS,

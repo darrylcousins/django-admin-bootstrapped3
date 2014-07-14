@@ -65,11 +65,16 @@
   </div>
   {% endif %}
 
-  <div class="row">
-    <div class="form-actions col-sm-12">
-    {% if save_on_top %}{% block submit_buttons_top %}{% submit_row %}{% endblock %}{% endif %}
+  {% if save_on_top %}
+    <div class="row">
+      <div class="form-actions col-sm-12">
+          {% block submit_buttons_top %}
+            {% submit_row %}
+          {% endblock %}
+      </div>
+      <div class="control-group">&nbsp;</div>
     </div>
-  </div>
+  {% endif %}
 
   <div class="row">
     <div id="content-main" class="col-sm-12">
