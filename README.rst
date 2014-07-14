@@ -15,7 +15,7 @@ contributors. A good deal of the this readme comes from the original repostory.
 Requirements
 ------------
 
--  Django ``>=1.6.x``.
+-  Django ``>=1.7.x``.
 -  Python ``3``
 -  `django-bootstrap3`_
 
