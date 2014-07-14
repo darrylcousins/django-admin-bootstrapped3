@@ -1,7 +1,7 @@
 django-admin-bootstrapped
 =========================
 
-A Django admin theme using Twitter Bootstrap. It doesn't need any kind
+A Django admin theme using `Bootstrap <http://getbootstrap.com>`_. It doesn't need any kind
 of modification on your side, just add it to the installed apps.
 
 Credits
@@ -36,7 +36,6 @@ Get the test project from github::
 
     $ git clone https://github.com/darrylcousins/django-project.git
     $ cd django-project
-    $ python setup.py develop
 
 The test project uses django-bootstrap3_ and bootstrapped3_ admin.  these extra
 packages can be installed with::
@@ -57,7 +56,7 @@ And can be run with::
     $ python manage.py runserver 9000
 
 There are no urls beyond the admin screens and api json views. It attempts to
-demonstrate the autocomplete widgets.
+demonstrate the autocomplete widgets. All models demonstrate some aspect of the widgets.
 
 Included
 --------
@@ -65,7 +64,7 @@ Included
 Autocomplete Widgets
 ~~~~~~~~~~~~~~~~~~~~
 
-See `django-autocomplete`_.
+See `django-autocomplete <https://github.com/darrylcousins/django-autocomplete>`_.
 
 Translate/change an application name with a template
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -116,8 +115,7 @@ this:
         extra = 0
 
 This feature was brought to you by `Kyle
-Bock <https://github.com/kwbock>`_. Thank you Kyle!
+Bock <https://github.com/kwbock>`_.
 
 .. _bootstrapped3: <https://github.com/darrylcousins/django-admin-bootstrapped3>
-.. _django-autocomplete: <https://github.com/darrylcousins/django-autocomplete>
 .. _django-bootstrap3: <https://github.com/dyve/django-bootstrap3>
