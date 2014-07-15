@@ -1,5 +1,7 @@
 /* overrides to default admin style */
-
+.object-tools {
+padding-top: 8px;
+}
 label {
   font-size: 14px;
 }

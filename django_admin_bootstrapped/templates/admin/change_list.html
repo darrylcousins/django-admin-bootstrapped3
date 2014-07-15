@@ -58,17 +58,17 @@
 {% block coltype %}flex{% endblock %}
 
 {% block object-tools %}
-    <ul class="object-tools pull-left navbar-form list-unstyled">
+    <div class="object-tools pull-left btn-group">
         {% block object-tools-items %}
-        {% if has_add_permission %}
-        <li>
-        <a href="{% url cl.opts|admin_urlname:'add' %}{% if is_popup %}?_popup=1{% endif %}" class="btn btn-primary">
-            <span class="glyphicon glyphicon-plus"></span> {% blocktrans with cl.opts.verbose_name as name %}Add {{ name }}{% endblocktrans %}
-        </a>
-        </li>
-        {% endif %}
+          {% if has_add_permission %}
+          <a href="{% url cl.opts|admin_urlname:'add' %}{% if is_popup %}?_popup=1{% endif %}" class="btn btn-primary btn-sm">
+              <span class="glyphicon glyphicon-plus"></span> {% blocktrans with cl.opts.verbose_name as name %}Add {{ name }}{% endblocktrans %}
+          </a>
+          {% endif %}
         {% endblock %}
-    </ul>
+    </div>
+
+    {% block search %}{% search_form cl %}{% endblock %}
 
     {% if cl.has_filters %}
     <ul class="nav navbar-nav pull-right">
@@ -82,7 +82,6 @@
         </li>
     </ul>
     {% endif %}
-    {% block search %}{% search_form cl %}{% endblock %}
 
 {% endblock object-tools %}
 
