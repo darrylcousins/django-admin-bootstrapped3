@@ -37,7 +37,7 @@ Get the test project from github::
     $ git clone https://github.com/darrylcousins/django-project.git
     $ cd django-project
 
-The test project uses django-bootstrap3_ and bootstrapped3_ admin.  these extra
+The test project uses `django-bootstrap3`_ and `bootstrapped3`_ admin.  these extra
 packages can be installed with::
 
     $ pip install -r requirements.txt
@@ -117,5 +117,5 @@ this:
 This feature was brought to you by `Kyle
 Bock <https://github.com/kwbock>`_.
 
-.. _bootstrapped3: <https://github.com/darrylcousins/django-admin-bootstrapped3>
-.. _django-bootstrap3: <https://github.com/dyve/django-bootstrap3>
+.. _django-bootstrap3: <https://github.com/darrylcousins/django-admin-bootstrapped3>
+.. _bootstrapped3: <https://github.com/dyve/django-bootstrap3>
