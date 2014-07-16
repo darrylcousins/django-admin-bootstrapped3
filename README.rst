@@ -117,5 +117,5 @@ this:
 This feature was brought to you by `Kyle
 Bock <https://github.com/kwbock>`_.
 
-.. _django-bootstrap3: <https://github.com/darrylcousins/django-admin-bootstrapped3>
-.. _bootstrapped3: <https://github.com/dyve/django-bootstrap3>
+.. _django-bootstrap3: https://github.com/darrylcousins/django-admin-bootstrapped3
+.. _bootstrapped3: https://github.com/dyve/django-bootstrap3
