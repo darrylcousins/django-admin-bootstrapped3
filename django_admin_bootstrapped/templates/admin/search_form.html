@@ -5,8 +5,8 @@
 
     <!-- search using autocomplete -->
     <div style="margin-right:8px">
-      <form class="navbar-form navbar-right" role="search" id="changelist-search" action="" method="get">
-        {% bootstrap_field cl.model_admin.search_form.q show_label=False %}
+      <form class="navbar-form navbar-right" role="search" id="autocomplete-search" action="" method="get">
+        {% bootstrap_field cl.model_admin.search_form.q show_label=False title='Search' %}
         {% for pair in cl.params.items %}
             {% ifnotequal pair.0 search_var %}<input type="hidden" name="{{ pair.0 }}" value="{{ pair.1 }}"/>{% endifnotequal %}
         {% endfor %}
@@ -16,16 +16,21 @@
   {% else %}
 
     <form class="navbar-form navbar-right" role="search" id="changelist-search" action="" method="get">
-    <div class="form-group"><!-- DIV needed for valid HTML -->
-    <input type="text" class="form-control search-query" placeholder="{% trans 'Search' %}" size="40" name="{{ search_var }}" value="{{ cl.query }}" id="searchbar" />
-    </div>
-    <button type="submit" class="btn btn-default">Submit</button>
-    {% if show_result_count %}
-        <span class="small quiet">{% blocktrans count counter=cl.result_count %}{{ counter }} result{% plural %}{{ counter }} results{% endblocktrans %} (<a href="?{% if cl.is_popup %}pop=1{% endif %}">{% blocktrans with full_result_count=cl.full_result_count %}{{ full_result_count }} total{% endblocktrans %}</a>)</span>
-    {% endif %}
-    {% for pair in cl.params.items %}
-        {% ifnotequal pair.0 search_var %}<input type="hidden" name="{{ pair.0 }}" value="{{ pair.1 }}"/>{% endifnotequal %}
-    {% endfor %}
+      <div class="input-group">
+        <input type="text" class="form-control search-query" 
+               title="Enter text to filter results"
+               placeholder="{% trans 'Filter results ...' %}" size="40" 
+               name="{{ search_var }}" value="{{ cl.query }}" id="searchbar" />
+        <span class="input-group-btn">
+          <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i></button>
+        </span>
+      </div>
+      {% if show_result_count %}
+          <span class="small quiet">{% blocktrans count counter=cl.result_count %}{{ counter }} result{% plural %}{{ counter }} results{% endblocktrans %} (<a href="?{% if cl.is_popup %}pop=1{% endif %}">{% blocktrans with full_result_count=cl.full_result_count %}{{ full_result_count }} total{% endblocktrans %}</a>)</span>
+      {% endif %}
+      {% for pair in cl.params.items %}
+          {% ifnotequal pair.0 search_var %}<input type="hidden" name="{{ pair.0 }}" value="{{ pair.1 }}"/>{% endifnotequal %}
+      {% endfor %}
     </form>
     <script type="text/javascript">document.getElementById("searchbar").focus();</script>
 

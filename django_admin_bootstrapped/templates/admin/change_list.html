@@ -61,7 +61,7 @@
     <div class="object-tools pull-left btn-group">
         {% block object-tools-items %}
           {% if has_add_permission %}
-          <a href="{% url cl.opts|admin_urlname:'add' %}{% if is_popup %}?_popup=1{% endif %}" class="btn btn-primary btn-sm">
+          <a href="{% url cl.opts|admin_urlname:'add' %}{% if is_popup %}?_popup=1{% endif %}" class="btn btn-primary">
               <span class="glyphicon glyphicon-plus"></span> {% blocktrans with cl.opts.verbose_name as name %}Add {{ name }}{% endblocktrans %}
           </a>
           {% endif %}
@@ -102,20 +102,73 @@
     {% render_with_template_if_exist cl.opts.app_label|lower|add:"/admin_app_"|add:app_name|add:"_description.html" "" %}
 {% endwith %}
 
-{% if action_form and actions_on_top and cl.full_result_count %}
-<div class='pull-right'>{% admin_actions %}</div>
-{% endif %}
+<div class="navbar navbar-default" style="padding: 8px">
+  <div class="row">
+
+    <div class="col-sm-3">
+    {% if cl.search_fields and cl.model_admin.search_form %}
+    {# display the normal search form here if we have the autocomplete search form there #}
+
+        <div class="input-group">
+          <input type="text" class="form-control search-query" 
+                 title="Enter text to filter results"
+                 placeholder="{% trans 'Filter results ...' %}" size="40" 
+                 name="q" value="{{ cl.query }}" id="filterbar" />
+          <span class="input-group-btn">
+            <button id="filter-search" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i></button>
+          </span>
+        </div>
+        {% if show_result_count %}
+            <span class="small quiet">{% blocktrans count counter=cl.result_count %}{{ counter }} result{% plural %}{{ counter }} results{% endblocktrans %} (<a href="?{% if cl.is_popup %}pop=1{% endif %}">{% blocktrans with full_result_count=cl.full_result_count %}{{ full_result_count }} total{% endblocktrans %}</a>)</span>
+        {% endif %}
+        {% for pair in cl.params.items %}
+            {% ifnotequal pair.0 search_var %}<input class="filter-inputs" type="hidden" name="{{ pair.0 }}" value="{{ pair.1 }}"/>{% endifnotequal %}
+        {% endfor %}
+        <script type="text/javascript">
+          document.getElementById("filterbar").focus();
+          var qs = '';
+           $('#filter-search').click(
+             {'qs': qs},
+             function(e){
+               e.preventDefault();
+               $('.filter-inputs').each(
+                 function(idx, value){
+                   console.log(value)
+                   qs += encodeURIComponent($(value).prop('name')) + "=" + encodeURIComponent($(value).val()) + "&";
+               })
+               var input = $('#filterbar');
+               console.log(input);
+               qs += encodeURIComponent($(input).prop('name')) + "=" + encodeURIComponent(input.val());
+               var url = "?" + qs;
+               document.location = url;
+               return false;
+             })
+        </script>
+
+    {% endif %}
+    </div>
+
+    <div class="col-sm-4">
+      {% block date_hierarchy %}
+          {% date_hierarchy cl %}
+      {% endblock %}
+
+    </div>
+
+    <div class="col-sm-5">
+    {% if action_form and actions_on_top and cl.full_result_count %}
+    <div class='pull-right'>{% admin_actions %}</div>
+    {% endif %}
+    </div>
+
+  </div>
+</div>
 
 <div id="content-main">
+  {% if cl.formset %}
+      <div>{{ cl.formset.management_form }}</div>
+  {% endif %}
   <div class="module{% if cl.has_filters %} filtered{% endif %}" id="_changelist">
-    {% block date_hierarchy %}
-        {% date_hierarchy cl %}
-    {% endblock %}
-
-    {% if cl.formset %}
-        <div>{{ cl.formset.management_form }}</div>
-    {% endif %}
-
     <div class="row">
       <div class="col-xs-12">
         {% block result_list %}

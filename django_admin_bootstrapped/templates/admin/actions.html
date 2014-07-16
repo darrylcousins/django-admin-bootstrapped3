@@ -1,14 +1,53 @@
 {% load i18n bootstrap3 %}
-<div class="actions" style="display:inline-block;">
-  {% for field in action_form %}
-    {% bootstrap_field field show_label=False form_group_class="inline" %}
-  {% endfor %}
-  <button type="submit" class="button btn btn-primary" title="{% trans "Run the selected action" %}"
-          name="index" value="{{ action_index|default:0 }}">{% trans "Go" %}</button>
+<div class="actions">
+
+  {% if actions_selection_counter %}
+    <span class="action-counter pull-left text-muted" style="margin:8px;">{{ selection_note }}</span>
+  {% endif %}
+
+  {{ action_form.select_across }}
+  <input type="hidden" name="action" id="action" value="{{ action_form.action.value }}">
+
+  <div class="input-group">
+      <div class="input-group-btn" id="dropdown-action">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+          {% for choice in action_form.action.field.widget.choices %}
+            {% if not forloop.first %}
+              <li><a class="selected_action" href="#" data-action="{{ choice.0 }}">{{ choice.1 }}</a></li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      <input type="text" class="form-control" size="30"
+             placeholder="{% trans 'Select action ...' %}"
+             name="action-input" value="" id="action-input" />
+      <div class="input-group-btn">
+        <button type="submit" class="btn btn-primary" title="{% trans "Run the selected action" %}"
+                name="index" value="{{ action_index|default:0 }}">{% trans "Go" %}!</button>
+      </div>
+  </div>
+
+  <script type="text/javascript">
+  $(function() { // equivalent to document.ready
+      $('.selected_action').each(
+        function(idx, el) {
+          $(el).click(
+            function (e) {
+              $('input#action-input').val($(el).html());
+              $('input#action').val($(el).attr('data-action'));
+              $('#dropdown-action').removeClass('open');
+              e.preventDefault();
+              return false;
+          });
+        })
+  })
+  </script>
 
   {% if actions_selection_counter %}
     <script type="text/javascript">var _actions_icnt="{{ cl.result_list|length|default:"0" }}";</script>
-    <span class="action-counter" style="vertical-align:sub">{{ selection_note }}</span>
     {% if cl.result_count != cl.result_list|length %}
       <!-- TODO Figure out why these aren't working as expected -->
       <!--
@@ -21,14 +60,4 @@
     {% endif %}
   {% endif %}
 
-  <script type="text/javascript">
-  $(function() { // equivalent to document.ready
-      var opt = $("select[name=action]").find('option').get(0);
-      $(opt).html('{% trans "Choose action for selected" %} ...');
-  })
-  </script>
-</div>
-<!-- space -->
-<div class="control-group">
-  &nbsp;
 </div>

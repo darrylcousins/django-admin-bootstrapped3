@@ -16,6 +16,9 @@ a:focus {
 .sidebar-nav {
     padding: 9px 0;
 }
+.nav-pills>li>a {
+padding: 7px 10px !important;
+}
 .control-group input[type=text] {
     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
     -moz-box-sizing: border-box;    /* Firefox, other Gecko */

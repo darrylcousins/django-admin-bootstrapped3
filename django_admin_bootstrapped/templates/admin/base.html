@@ -184,6 +184,7 @@
     {% block navbar %}
     <div class="navbar navbar-default">
       <div class="navbar-inner">
+
         {% block pretitle %}{% endblock %}
         {% block content_title %}
           {% if title %}
@@ -192,7 +193,9 @@
             </a>
           {% endif %}
         {% endblock %}
+
         {% block object-tools %}{% endblock %}
+
       </div>
     </div>
     {% endblock navbar %}
