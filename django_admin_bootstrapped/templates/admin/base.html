@@ -181,10 +181,9 @@
 
   <!-- Content -->
   <div id="content" class="{% block coltype %}colM{% endblock %}">
-    {% block navbar %}
+
     <div class="navbar navbar-default">
       <div class="navbar-inner">
-
         {% block pretitle %}{% endblock %}
         {% block content_title %}
           {% if title %}
@@ -193,11 +192,11 @@
             </a>
           {% endif %}
         {% endblock %}
-
-        {% block object-tools %}{% endblock %}
-
       </div>
     </div>
+
+    {% block navbar %}
+      {% block object-tools %}{% endblock %}
     {% endblock navbar %}
 
     {% block messages %}
