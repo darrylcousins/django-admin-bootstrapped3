@@ -110,8 +110,9 @@
   <div class="row">
 
     <div class="col-sm-3">
-    {% if cl.search_fields and cl.model_admin.search_form %}
-    {# display the normal search form here if we have the autocomplete search form there #}
+    {% if cl.search_fields %}
+    {# display a normal search form here #}
+    {# not using form as here we are inside the page form #}
 
         <div class="input-group">
           <input type="text" class="form-control search-query" 
