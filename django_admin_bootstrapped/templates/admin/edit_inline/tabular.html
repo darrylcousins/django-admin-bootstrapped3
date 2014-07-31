@@ -4,7 +4,11 @@
     {{ inline_admin_formset.formset.management_form }}
     <fieldset class="module" style="border-top: 1px solid #efefef;padding-top:1em;margin-top:1em">
      <h4>{{ inline_admin_formset.opts.verbose_name_plural|capfirst }}</h4>
-     {{ inline_admin_formset.formset.non_form_errors }}
+     {% if inline_admin_formset.formset.non_form_errors %}
+     <p class="alert alert-danger">
+       {{ inline_admin_formset.formset.non_form_errors }}
+     </p>
+     {% endif %}
      <table style="margin-top: 1em" class="table inline table-striped table-bordered">
        <thead
            {% if not inline_admin_formset|length %}
@@ -38,7 +42,11 @@
        <tbody>
        {% for inline_admin_form in inline_admin_formset %}
           {% if inline_admin_form.form.non_field_errors %}
-          <tr><td colspan="{{ inline_admin_form|cell_count }}">{{ inline_admin_form.form.non_field_errors }}</td></tr>
+          <tr>
+            <td class="alert alert-danger" colspan="{{ inline_admin_form|cell_count }}">
+              {{ inline_admin_form.form.non_field_errors }}
+            </td>
+          </tr>
           {% endif %}
           <tr class="form-row {% cycle "row1" "row2" %}
               {% if inline_admin_form.original or inline_admin_form.show_url %}
