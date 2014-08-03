@@ -59,7 +59,6 @@
             {% else %}
                 {% bootstrap_field field.field show_label=False %}
             {% endif %}
-            {% if not field.is_readonly and field.errors %}<span class="help-inline">{{ field.errors|striptags }}</span>{% endif %}
           </div>
         {% endif %}
 
