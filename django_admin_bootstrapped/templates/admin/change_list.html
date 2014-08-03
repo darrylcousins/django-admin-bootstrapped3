@@ -45,7 +45,7 @@
     </li>
     <li>
       <a href="{% url 'admin:app_list' app_label=opts.app_label %}">
-        {% render_with_template_if_exist opts.module_name|lower|add:"/admin_app_name.html" opts.app_label|capfirst %}
+        {% render_with_template_if_exist opts.app_label|lower|add:"/admin_app_name.html" opts.app_label|capfirst %}
       </a>
     </li>
     <li>
@@ -173,6 +173,9 @@
   {% if cl.formset %}
       <div>{{ cl.formset.management_form }}</div>
   {% endif %}
+  {% block toppagination %}
+    {% pagination cl %}
+  {% endblock %}
   <div class="module{% if cl.has_filters %} filtered{% endif %}" id="_changelist">
     <div class="row">
       <div class="col-xs-12">
