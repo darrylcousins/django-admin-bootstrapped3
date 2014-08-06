@@ -153,14 +153,14 @@
     {% endif %}
     </div>
 
-    <div class="col-sm-4">
+    <div class="col-sm-3">
       {% block date_hierarchy %}
           {% date_hierarchy cl %}
       {% endblock %}
 
     </div>
 
-    <div class="col-sm-5">
+    <div class="col-sm-6">
     {% if action_form and actions_on_top and cl.full_result_count %}
     <div class='pull-right'>{% admin_actions %}</div>
     {% endif %}
