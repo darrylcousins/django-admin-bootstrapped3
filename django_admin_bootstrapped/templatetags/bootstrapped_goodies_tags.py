@@ -8,7 +8,7 @@ register = template.Library()
 def render_with_template_if_exist(context, template, fallback):
     text = fallback
     try:
-        text = render_to_string(template, context)
+        text = render_to_string(template, context.dictionary)
     except:
         pass
     return text
