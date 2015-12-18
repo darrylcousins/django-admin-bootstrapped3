@@ -28,7 +28,7 @@ def language_selector(context):
         template = "admin/language_selector.html"
         context['i18n_is_set'] = True
         try:
-            output = render_to_string(template, context)
+            output = render_to_string(template, context.dictionary)
         except:
             pass
     return output
