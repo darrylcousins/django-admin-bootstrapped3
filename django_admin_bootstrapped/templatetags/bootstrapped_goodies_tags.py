@@ -8,7 +8,7 @@ register = template.Library()
 def render_with_template_if_exist(context, template, fallback):
     text = fallback
     try:
-        text = render_to_string(template, context)
+        text = render_to_string(template, context.dictionary)
     except:
         pass
     return text
@@ -28,7 +28,7 @@ def language_selector(context):
         template = "admin/language_selector.html"
         context['i18n_is_set'] = True
         try:
-            output = render_to_string(template, context)
+            output = render_to_string(template, context.dictionary)
         except:
             pass
     return output
